@@ -1,8 +1,10 @@
 import Head from 'next/head';
+import Image from "next/image";
 import Link from 'next/link';
 import styles from '../styles/Home.module.css';
-import Layout from '../components/layout';
+import Layout, { website_title } from '../components/Layout';
 import util_styles from '../styles/utils.module.css';
+
 import { getPostsData } from '../lib/post';
 
 // SSGの場合
@@ -17,33 +19,28 @@ export async function getStaticProps() {
   };
 };
 
-// SSRの場合
-// export async function getServerSideProps(context) {
-//   return {
-//     props: {
-//       // コンポーネントに渡すためのprops
-//     }
-//   }
-// };
-
 export default function Home({ all_posts_data }) {
   return (
-    <Layout>
+    <Layout home>
+      <Head>
+        <title>{ website_title }</title>
+      </Head>
+
       <section className={ util_styles.headingMd }>
         <p>私はフルスタックエンジニアです。Udemy講師として活動しています。好きな言語はJavascriptです。</p>
       </section>
 
       <section className={ `${ util_styles.headingMd } ${ util_styles.padding1px }` }>
-        <h2>📝エンジニアのブログ</h2>
+        <h2 className={ util_styles.headingLg }>📝エンジニアのブログ</h2>
 
         <div className={ styles.grid }>
           { all_posts_data.map(({ id, title, date, thumbnail }) => (
             <article key={id}>
-              <Link href={ `posts/${ id }` } >
-                <img src={ `${ thumbnail }` } alt="" className={ styles.thumbnailImage } />
+              <Link href={ `/posts/${ id }` } >
+                <img src={ `${ thumbnail }` } className={ styles.thumbnailImage } />
               </Link>
 
-              <Link href={ `posts/${ id }` } >
+              <Link href={ `/posts/${ id }` } >
                 <a className={util_styles.boldText}>{ title }</a>
               </Link>
               <br />
